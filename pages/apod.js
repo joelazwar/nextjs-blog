@@ -37,37 +37,18 @@ const toBase64 = (str) =>
     ? Buffer.from(str).toString("base64")
     : window.btoa(str);
 
-export function Content({ startDate, date }) {
-  const { data, error } = useSWR(
-    `https://api.nasa.gov/planetary/apod?start_date=${startDate}&end_date=${date}&thumbs=true&api_key=LcijitMlKSXA5pCXiyTIw51yLv1Eg0imGpBo8pOQ`,
-    fetcher
-  );
+const ApodCard = ({copyright, date, explanation, hdurl, url, title, thumbnail_url}) =>{
+  
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  if (error) return <div>failed to load</div>;
-  if (!data)
-    return (
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    );
-
-  if (data.code === 400) {
-    return <div>{data.msg}</div>;
-  }
-
-  return data.map(
-    (
-      { copyright, date, explanation, hdurl, url, title, thumbnail_url },
-      index
-    ) => (
-      <Row>
+  return (
+    <Row>
         <Col md={12}>
           <Card>
-            <a href={hdurl}>
+            <a onClick={handleShow}>
               <Image
                 src={thumbnail_url ? thumbnail_url : url}
                 alt={copyright}
@@ -126,6 +107,41 @@ export function Content({ startDate, date }) {
           </Modal.Footer>
         </Modal>
       </Row>
+  )
+}
+
+export function Content({ startDate, date }) {
+  const { data, error } = useSWR(
+    `https://api.nasa.gov/planetary/apod?start_date=${startDate}&end_date=${date}&thumbs=true&api_key=LcijitMlKSXA5pCXiyTIw51yLv1Eg0imGpBo8pOQ`,
+    fetcher
+  );
+
+  if (error) return <div>failed to load</div>;
+  if (!data)
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+
+  if (data.code === 400) {
+    return <div>{data.msg}</div>;
+  }
+
+  return data.map(
+    (
+      { copyright, date, explanation, hdurl, url, title, thumbnail_url },
+      index
+    ) => (
+      <ApodCard 
+        copyright={copyright}
+        date={date}
+        explanation={explanation}
+        hdurl={hdurl}
+        url={url}
+        title={title}
+        thumbnail_url={thumbnail_url}
+      />
     )
   );
 }
