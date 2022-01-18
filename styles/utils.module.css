@@ -17,6 +17,7 @@
   .headingLg {
     font-size: 1.5rem;
     line-height: 1.4;
+    font-weight: 500;
     margin: 1rem 0;
   }
   
@@ -49,4 +50,8 @@
   
   .lightText {
     color: #666;
+  }
+
+  .paragraph {
+    text-align: center;
   }
