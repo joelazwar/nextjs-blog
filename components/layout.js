@@ -12,7 +12,7 @@ export default function Layout({ children, home }) {
   return (
     <div className={styles.container}>
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" />
         <meta name="description" content="Learn how to build a personal website using Next.js" />
         <meta
           property="og:image"
