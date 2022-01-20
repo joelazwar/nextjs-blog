@@ -18,7 +18,7 @@ Then install npm packages
 npm install
 ```
 
-Then run the server locally and navigate to localhost:3000
+Then run the server locally and navigate to [localhost:3000](http://localhost:3000)
 
 ```sh
 npm run dev
