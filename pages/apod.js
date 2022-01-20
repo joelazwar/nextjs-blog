@@ -1,20 +1,12 @@
-import useSWR from "swr";
-import Layout, { siteTitle } from "../components/layout";
-import utilStyles from "../styles/utils.module.css";
-import Head from "next/head";
-import Image from "next/image";
-import DatePicker from "react-datepicker";
-import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import {
-  Container,
-  Row,
-  Col,
-  Spinner,
-  Card,
-  Modal,
-  Button,
-} from "react-bootstrap";
+import useSWR from 'swr';
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
+import Head from 'next/head';
+import Image from 'next/image';
+import DatePicker from 'react-datepicker';
+import { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Container, Row, Col, Spinner, Card, Modal, Button } from 'react-bootstrap';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -33,12 +25,9 @@ const shimmer = (w, h) => `
   </svg>`;
 
 const toBase64 = (str) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
+  typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
 
-const ApodCard = ({copyright, date, explanation, hdurl, url, title, thumbnail_url}) =>{
-  
+const ApodCard = ({ copyright, date, explanation, hdurl, url, title, thumbnail_url }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -46,69 +35,66 @@ const ApodCard = ({copyright, date, explanation, hdurl, url, title, thumbnail_ur
 
   return (
     <Row>
-        <Col md={12}>
-          <Card>
+      <Col md={12}>
+        <Card className={'hover'} style={{ 'border-radius': '25px' }}>
+          <a onClick={handleShow}>
+            <Image
+              src={thumbnail_url ? thumbnail_url : url}
+              alt={copyright}
+              width="100%"
+              height="50%"
+              layout="responsive"
+              objectFit="cover"
+              objectPosition="center"
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+            />
+          </a>
+          <article style={{ padding: '7px' }}>
             <a onClick={handleShow}>
-              <Image
-                src={thumbnail_url ? thumbnail_url : url}
-                alt={copyright}
-                width="100%"
-                height="50%"
-                layout="responsive"
-                objectFit="cover"
-                objectPosition="center"
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(700, 475)
-                )}`}
-              />
+              <h1 className={utilStyles.headingLg}>{title}</h1>
             </a>
-            <article>
-              <a onClick={handleShow}>
-                <h1 className={utilStyles.headingLg}>{title}</h1>
-              </a>
-              <time datetime={date}>{date}</time>
-              <br />
-              <small className={utilStyles.lightText}>{explanation}</small>
-            </article>
+            <time dateTime={date}>{date}</time>
             <br />
-          </Card>
+            <small className={utilStyles.lightText}>{explanation}</small>
+          </article>
           <br />
-        </Col>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{siteTitle}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        </Card>
+        <br />
+      </Col>
+      <Modal show={show} onHide={handleClose} dialogClassName="custom-modal">
+        <Modal.Header closeButton>
+          <Modal.Title>{siteTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <a href={hdurl}>
             <Image
               src={thumbnail_url ? thumbnail_url : url}
               alt={copyright}
               width="100%"
               height="100"
               layout="responsive"
-              objectFit="cover"
-              objectPosition="center"
+              objectFit="contain"
               placeholder="blur"
-              blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                shimmer(700, 475)
-              )}`}
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
             />
-            <article>
-              <h1 className={utilStyles.headingLg}>{title}</h1>
-              <time datetime={date}>{date}</time>
-              <br />
-              <small className={utilStyles.lightText}>{explanation}</small>
-            </article>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </Row>
-  )
-}
+          </a>
+          <article>
+            <h1 className={utilStyles.headingLg}>{title}</h1>
+            <time dateTime={date}>{date}</time>
+            <br />
+            <small className={utilStyles.lightText}>{explanation}</small>
+          </article>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Row>
+  );
+};
 
 export function Content({ startDate, date }) {
   const { data, error } = useSWR(
@@ -128,26 +114,21 @@ export function Content({ startDate, date }) {
     return <div>{data.msg}</div>;
   }
 
-  return data.map(
-    (
-      { copyright, date, explanation, hdurl, url, title, thumbnail_url },
-      index
-    ) => (
-      <ApodCard 
-        copyright={copyright}
-        date={date}
-        explanation={explanation}
-        hdurl={hdurl}
-        url={url}
-        title={title}
-        thumbnail_url={thumbnail_url}
-      />
-    )
-  );
+  return data.map(({ copyright, date, explanation, hdurl, url, title, thumbnail_url }, index) => (
+    <ApodCard
+      copyright={copyright}
+      date={date}
+      explanation={explanation}
+      hdurl={hdurl}
+      url={url}
+      title={title}
+      thumbnail_url={thumbnail_url}
+      key={index}
+    />
+  ));
 }
 
-export const dateFormat = (d) =>
-  d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+export const dateFormat = (d) => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 
 export default function Page() {
   const [startDate, setStartDate] = useState(new Date());
@@ -165,10 +146,7 @@ export default function Page() {
         </Row>
         <Row>
           <Col xs={6}>
-            <DatePicker
-              selected={startDate}
-              onChange={(startDate) => setStartDate(startDate)}
-            />
+            <DatePicker selected={startDate} onChange={(startDate) => setStartDate(startDate)} />
           </Col>
           <Col xs={6}>
             <DatePicker selected={date} onChange={(date) => setDate(date)} />
