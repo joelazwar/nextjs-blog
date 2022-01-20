@@ -1,14 +1,16 @@
-import { test } from "gray-matter";
-import Head from "next/head";
-import Link from "next/link";
-import Layout, { siteTitle } from "../components/layout";
-import utilStyles from "../styles/utils.module.css";
-import { Content, dateFormat } from "./apod.js"
-import {Button} from 'react-bootstrap';
-import {useState} from 'react';
- 
+import Head from 'next/head';
+import Link from 'next/link';
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
+import { Content, dateFormat } from './apod.js';
+import { Button } from 'react-bootstrap';
+import { useState } from 'react';
+
 function randomDate() {
-  return new Date(new Date('Jun 16, 1995').getTime() + Math.random() * (new Date().getTime() - new Date('Jun 16, 1995').getTime()));
+  return new Date(
+    new Date('Jun 16, 1995').getTime() +
+      Math.random() * (new Date().getTime() - new Date('Jun 16, 1995').getTime())
+  );
 }
 
 export default function Home() {
@@ -20,20 +22,26 @@ export default function Home() {
         <title>{siteTitle}</title>
       </Head>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <p className={utilStyles.paragraph}>This website is made to utilize the NASA API for the Astronomy Picture of the Day (APOD)</p>
+        <p className={utilStyles.paragraph}>
+          This website is made to utilize the NASA API for the Astronomy Picture of the Day (APOD)
+        </p>
         <br />
-        <Button
-          variant="primary"
-          onClick={() => setDate(randomDate())}
-        >
-          Give me another picture!
-        </Button>
+        <div style={{ 'text-align': 'center' }}>
+          <Button variant="primary" onClick={() => setDate(randomDate())}>
+            Give me another picture!
+          </Button>
+        </div>
       </section>
       <br />
       <Content startDate={dateFormat(date)} date={dateFormat(date)} />
       <br />
-    <Link href="/apod"><a><h1 className={utilStyles.headingMd}>Click Here for more!</h1></a></Link>
+      <Link href="/apod">
+        <a>
+          <h1 className={utilStyles.headingMd} style={{ 'text-align': 'center' }}>
+            Click Here for more!
+          </h1>
+        </a>
+      </Link>
     </Layout>
-    
   );
 }
