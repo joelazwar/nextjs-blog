@@ -26,7 +26,7 @@ export default function Home() {
           This website is made to utilize the NASA API for the Astronomy Picture of the Day (APOD)
         </p>
         <br />
-        <div style={{ 'text-align': 'center' }}>
+        <div style={{ textAlign: 'center' }}>
           <Button variant="primary" onClick={() => setDate(randomDate())}>
             Give me another picture!
           </Button>
@@ -37,7 +37,7 @@ export default function Home() {
       <br />
       <Link href="/apod">
         <a>
-          <h1 className={utilStyles.headingMd} style={{ 'text-align': 'center' }}>
+          <h1 className={utilStyles.headingMd} style={{ textAlign: 'center' }}>
             Click Here for more!
           </h1>
         </a>
