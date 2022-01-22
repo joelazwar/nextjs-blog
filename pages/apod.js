@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Container, Row, Col, Spinner, Card, Modal, Button } from 'react-bootstrap';
+import { Provider, LikeButton } from '@lyket/react';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -29,7 +30,7 @@ const toBase64 = (str) =>
 
 const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-const ApodCard = ({ copyright, date, explanation, hdurl, url, title, thumbnail_url }) => {
+const ApodCard = ({ copyright, date, explanation, hdurl, url, title, thumbnail_url, key }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -95,6 +96,22 @@ const ApodCard = ({ copyright, date, explanation, hdurl, url, title, thumbnail_u
           </article>
         </Modal.Body>
         <Modal.Footer>
+          <Provider
+            apiKey="pt_1d0e562836df4a01d91320f4f5262f"
+            theme={{
+              colors: {
+                background: '#b8fff3',
+                text: '#ffffff00',
+                primary: 'rgba(255, 224, 138, 0.4)',
+              },
+            }}
+          >
+            <LikeButton
+              namespace="like-button"
+              id={`like-${key}`}
+              component={LikeButton.templates.Twitter}
+            />
+          </Provider>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
